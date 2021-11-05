@@ -3,13 +3,16 @@ version: '3.8'
 services:
   frontend:
     container_name: frontend-nba
+    image: frontend
+    restart: on-failure
     build:
       context: ./frontend
-    command: npm run dev
     volumes: 
      - ./frontend:/usr/src/app
+     - /usr/src/app/node_modules
     ports:
      - "3000:3000"
+     - "24678:24678"
   backend:
     container_name: backend-nba
     build:

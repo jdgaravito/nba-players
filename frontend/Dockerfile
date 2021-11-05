@@ -1,18 +1,23 @@
-# pull official base image
-FROM node:16-slim
+# Our Node base image
+FROM node:16
 
-# set working directory
-RUN mkdir -p /home/node/app
-WORKDIR /home/node/app
+# Set the Node environment to development to ensure all packages are installed
+ENV NODE_ENV development
 
-# copy package.json
-COPY ./package*.json .
+# Change our current working directory
+WORKDIR /usr/src/app
 
-# install system dependencies
-RUN apt-get update \
-  && apt-get -y install netcat gcc \
-  && apt-get clean
-#install svelte-kit dependencies
-RUN npm install
-# add app
+# Copy over `package.json` and lock files to optimize the build process
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "yarn.lock", "./"]
+# Install Node modules
+RUN yarn
+
+# Copy over rest of the project files
 COPY . .
+
+# Expose port 3000 for the SvelteKit app and 24678 for Vite's HMR
+EXPOSE 3000
+EXPOSE 24678
+
+# Run `yarn dev` and set the host to 0.0.0.0 so we can access the web app from outside
+CMD ["yarn", "dev", "--host", "0.0.0.0"]
