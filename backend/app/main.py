@@ -85,22 +85,47 @@ def edit_player(player_id: str, player: Player = Body(...)):
             return {"message": "Player has been updated successfully"}
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)    
 
+
 @app.get("/search-pair/{player_height}", status_code=status.HTTP_200_OK, tags=["players"])
-def calc_pairs(player_height: int):
-    index_pairs = {}
+def calc_pairs(player_height: int = Path(..., lt=200)):
+    index_pairs = []
+    map_pair = {} 
+    
+    for index, player in enumerate(db):
+        if player_height - player['h_in'] in map_pair:
+            # index2 = map_pair[player_height - player['h_in']]
+            # index_pairs.append({index, index2})
+           print(map_pair)
+               
+        if player['h_in'] in map_pair:
+            map_pair[db[index]['h_in']] = index
+            
+        else:
+            pass
+        
+        # if player['h_in'] in map_pair:
+        #    map_pair[db[index]['h_in']] += 1
+        # else:       
+        #    map_pair[db[index]['h_in']] = 1
+
+
+
+        
+    return index_pairs
+
+
+@app.get("/search-pair-n2/{player_height}", status_code=status.HTTP_200_OK, tags=["players"])
+def calc_pairs(player_height: int = Path(..., lt=200)):   
+    index_pairs = []
     for index, player in enumerate(db):
         for index2 in range(index + 1, len(db)):
                 if db[index]['h_in'] + db[index2]['h_in'] <= player_height and db[index] != db[index2]:
-                   print(db[index]['first_name'], " ", db[index]['last_name'], "  -  ", db[index2]['first_name'], " ", db[index2]['last_name'])
-                   
-        
-      
-        # new_list = []
-        # for index2 in range(index + 1, len(db)):
-        #     #if player[index]['h_in'] + player[index2]['h_in'] == player_height:
-        #     count+= 1
-        #     return count
+                    index_pairs.append({index, index2})               
+    return index_pairs
 
+                    #print(db[index]['first_name'], " ", db[index]['last_name'], "  -  ", db[index2]['first_name'], " ", db[index2]['last_name'])
+                   
+                   
         
        
        
