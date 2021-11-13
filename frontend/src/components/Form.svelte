@@ -4,7 +4,7 @@
 	import ToggleUnits from './ToggleUnits.svelte';
 
 	let units = 'in';
-	let heightSum = "";
+	let heightSum = null;
 	let heightMessage = '';
 	let toggleValue = true;
 
@@ -22,6 +22,8 @@
 		units = 'meters'
 	}
 
+	let form
+	
 	//Submitting the form
 	const submit = ({target: form}) => {
 		const values = {heightSum, units}
@@ -68,3 +70,5 @@
 		transition: transform 0.2s ease-in-out;	
 	}
 </style>
+
+
