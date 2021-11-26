@@ -3,15 +3,17 @@
 	const dispatch = createEventDispatcher();
 	export let value = true;
 	export let label;
-
-	export let active = true;
-
-    
-	function handleButton(){
+	let active = true;
+	
+	
+	function handleClick(){
 		active = !active;
 		value = !value;
-		console.log(value)
+		dispatch(
+			'message', value
+		)
 	}
+
 </script>
 
 <div class="formControl">
@@ -26,13 +28,13 @@
 		<div class="button-container">
 			<input type="radio" class="radio_item" bind:value={value} name="item" id="radio1" />
 			<label class="label_item" for="radio1">
-				<button class:active={active} type="button" on:click={handleButton}> Inches </button>
+				<button class:active={active} type="button" on:click={handleClick}> Inches </button>
 			</label>
 		</div>
 		<div class="button-container">
-			<input type="radio" class="radio_item" bind:value={value} name="item" id="radio1" />
+			<input type="radio" class="radio_item" bind:value={value} name="item" id="radio2" />
 			<label class="label_item" for="radio1">
-				<button class:active={!active} type="button" on:click={handleButton}> Meters </button>
+				<button class:active={!active} type="button" on:click={handleClick}> Meters </button>
 			</label>
 		</div>
 	</div>

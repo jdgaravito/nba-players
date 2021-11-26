@@ -1,13 +1,14 @@
 <script>
 	export let id;
 	export let label;
-	export let value;
+	export let value = null;
 	export let placeholder = '';
-	export let type = 'text';
 	export let helptext = '';
 	export let optional = null;
 	export let valid = true;
 	export let validityMessage = '';
+	export let min = 10;
+	export let max = 200;
 	let touched = false;
 
 </script>
@@ -25,16 +26,16 @@
 
 	<p class="helperText">{helptext}</p>
 	<input
+		type="number"
 		class:invalid={!valid && touched}
-		{type}
 		{id}
 		{value}
 		{placeholder}
 		on:input
 		on:blur={() => (touched = true)}
 		required
-		min="10"
-		max="200"
+		min={min}
+		max={max}
 	/>
 	{#if validityMessage && !valid && touched}
 		<p class="error-message">
@@ -55,6 +56,7 @@
 		border-radius: 3px;
 		padding: 0.7rem 0.6rem 0.7rem 0.6rem;
 		background: var(--input-color);
+		color: #ffffff;
 	}
 
 	input:hover {
